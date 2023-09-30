@@ -1,13 +1,22 @@
 const express = require("express");
 const app = express();
 const sudoku = require("sudoku");
+const cors = require("cors");
+
+app.use(cors());
 
 app.get("/", (req, res) => {
-  var puzzle = sudoku.makepuzzle();
-
-  res.send(puzzle);
+  try {
+    var puzzle = sudoku.makepuzzle();
+    res.send(puzzle);
+  } catch (error) {
+    console.error("Error generating puzzle:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
-app.listen("2006", () => {
-  console.log("Server Listening on PORT 2006");
+const PORT = 2006;
+
+app.listen(PORT, () => {
+  console.log(`Server Listening on PORT ${PORT}`);
 });
